@@ -5,18 +5,24 @@ class window.Game extends Backbone.Model
     @set 'dealerHand', deck.dealDealer()
     @get('playerHand').on 'stand' , @endGame, @
 
-    @on 'change', ->
-      debugger;
-      @trigger 'gameOver'
-      , @
+    defaults: {
+      winner: undefined
+    },
 
-  defaults: {
-    winner: null
-  },
-
-  # gameOver: ->
+  newGame: ->
+    new AppView(model: new Game()).$el.appendTo 'body'
+    
+#    console.log("hello")
+    # @initialize()
+    @set 'winner', ''
 
   endGame: ->
+    console.log("Do we get hre")
+
+    if @get('winner') != undefined
+      @$('.hit-button').prop('disabled', true)
+      @$('.stand-button').prop('disabled', true)
+
     if @get('playerHand').scores()[1] > 21
       playerScore = @get('playerHand').scores()[0]
     else playerScore = @get('playerHand').scores()[1]
@@ -28,12 +34,11 @@ class window.Game extends Backbone.Model
     dealerScore = @calculateDealerScore()
 ##    console.log(@calculateDealerScore());
     if playerScore > 21
-      ##console.log("Lose")
       @set('winner', 'Player')
     else if (playerScore > dealerScore) or (dealerScore > 21)
       @set('winner', 'Player')
     else if playerScore == dealerScore
-      @set('winner', 'None')
+      @set('winner', undefined)
     else
       @set('winner', 'Dealer')
     #

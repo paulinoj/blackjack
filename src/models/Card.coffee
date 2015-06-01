@@ -14,3 +14,5 @@ class window.Card extends Backbone.Model
   flip: ->
     @set 'revealed', !@get 'revealed'
     @
+
+ # cardFile: "img/cards/" + @get('rankName') + "-" + @get('suitName') + ".png"
